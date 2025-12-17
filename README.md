@@ -1,14 +1,27 @@
-## Alzheimer’s Disease Diagnosis Prediction Project
+## Machine-learning prediction of Alzheimer’s disease based on biomarkers
 
-This project contains code for analyzing plasma biomarkers and cognitive scores
-to predict Alzheimer's disease diagnosis using Logistic Regression and Random Forest. This is a different dataset than the one used by group 2 for the group assignments. 
+Github link 
 
-The dataset can be found on Kaggle : "Plasma lipidomics in Alzheimer's disease", published in 2023 by Fereshteh Jozaghkar.
-DOI : https://doi.org/10.34810/data614
-Link : https://www.kaggle.com/datasets/fereshtehjozaghkar/plasma-lipidomics-in-alzheimers-disease 
+# 1.	Introduction 
 
-## Files
+Alzheimer’s disease (AD) is the most common cause of dementia. It is estimated that at least 55 million people have dementia worldwide, with projections that dementia will affect 139 million people by 2050 (1). In the UK alone, almost one million people live with dementia, and its economic impact was estimated to be around 42.5 billion GBP in 2024 (2). AD is a progressive neurodegenerative disease that is characterized by the abnormal accumulation of misfolded proteins such as amyloid beta plaques and tau tangles, which causes toxicity resulting in neuronal death, brain atrophy, and cognitive decline (3, 4). Despite extensive research efforts, there is no effective way to prevent or cure the disease. Aging is the main driver and risk factor to the disease, alongside genetics and environmental factors. The APOE ε4 allele is the most common genetic risk factor for late-onset AD, as about 60-80% of AD patients carry at least one ε4 allele (5).
+The aim of this project is to investigate how strong of a predictor is the ε4 allele for AD diagnosis, as well as cerebrospinal fluid (CSF) markers, while accounting for variables such as sex and age using machine learning methods.
+# 2.	Methods
+Analyses have been done on the following dataset : “Plasma lipidomics in Alzheimer's disease” published by Fereshteh Jozaghkar on Kaggle, 2023 (DOI : https://doi.org/10.34810/data614). The data contains a mix of demographic, clinical, genetic, and cognitive data from AD patients, individuals with mild cognitive impairment, and healthy controls (HCs).
+The sample data has been explored first for feature distribution and for any correlation between the dependent variable and predictors, as well as between predictors. The following variables have been selected as predictors to fit our model : age, sex, cognitive score (Mini-Mental State Examination or MMSE), CSF total tau, CSF phosphorylated tau, CSF amyloid levels, and APOE ε4 status. Our aim is to evaluate whether these features affect AD diagnosis, so our dependent variable will be Diagnosis.
+The dataset has been processed so that our diagnosis variable will be binary (0 = non AD for 109 samples ; and 1 = AD for 103 samples). Categorical variables were converted into binary values. The dataset was split into training (75%) and testing (25%) subsets by using train-test split method 75:25. We fit two different machine-learning models to our dataset, a Logistic Regression and a Random Forest.
+# 3.	Results
+Exploratory analysis has shown that AD cases represent about 50% of the dataset. Distribution of diagnostic classes shows the low abundance of HCs, which prompted the creation of a larger class called “non-AD”, pooling HCs with mild cognitive impairment in a “non-AD” class for training purposes. Assessing correlation among predictors revealed a strong correlation between total tau and phosphorylated tau CSF levels (r = 0.6), while a moderate correlation between MMSE and amyloid CSF levels is also present (r = 0.3). The rest of the predictors showed weak correlations among each other.
+We next trained two models, one Logistic Regression and one Random Forest to predict AD diagnosis. Both models reach an accuracy of 77,35%, however the Random Forest model’s ROC AUC slightly outperforms the Logistic Regression (0.85 vs 0.8). Focusing on the Random Forest model, a feature importance analysis show that MMSE, amyloid, phosphorylated tau and total tau CSF levels, and age influence the most our model’s decision when it comes to diagnosing an individual, respectively.
+  
+# 4.	Discussion and Conclusion
+MMSE, or cognitive performance, is the feature that influences the most our Random Forest model to predict AD diagnosis, which is reassuring as it is widely used as one of the test to diagnose dementia (6). Unsurprisingly, age also had a strong influence on model decision, which is expected for neurodegenerative diseases. The CSF features (amyloid and tau levels) came out as strong predictors of the model, which is consistent with well-established research on AD (3). Sex and APOE genotype had weaker impact on model prediction. The Random Forest is likely outperforming the Logistic Regression due to its ability to represent non-linear relationships.
+Limitations of this study point towards the smaller sample size, especially for the low number of HCs, as well as the dataset missing some values for the CSF biomarkers. While the models performed well with the available features, more detailed CSF data (lipidomics, transcriptomics, proteomics) would help to explore deeper the relationship between biomarkers and AD diagnosis. Finding more potential biomarkers of AD can lead to an earlier diagnosis and a better treatment of patients. To explore this more complex dataset, a Principal Component Analysis to reduce dimensionality could be used to handle the larger number of features.
+# 5.	References
+1.	Dementia Statistics: Alzheimer's Disease International; 2019 [Available from: https://www.alzint.org/about/dementia-facts-figures/dementia-statistics/#:~:text=Numbers%20of%20people%20with%20dementia,Asian%20and%20western%20Pacific%20neighbours.
+2.	Prevalence and Incidence Dementia Statistics Hub: Alzheimer's Research UK; 2025 [Available from: https://dementiastatistics.org/about-dementia/prevalence-and-incidence/.
+3.	Busche MA, Hyman BT, Busche MA, Hyman BT. Synergy between amyloid-β and tau in Alzheimer’s disease. Nature Neuroscience 2020 23:10. 2020–08–10;23(10).
+4.	Pini L, Pievani M, Bocchetta M, Altomare D, Bosco P, Cavedo E, et al. Brain atrophy in Alzheimer’s Disease and aging. Ageing Research Reviews. 2016/09/01;30.
+5.	Troutwine BR, Hamid L, Lysaker CR, Strope TA, Wilkins HM. Apolipoprotein E and Alzheimer's disease. Acta Pharmaceutica Sinica B. 2022/02/01;12(2).
+6.	Arevalo-Rodriguez I, Smailagic N, Roqué-Figuls M, Ciapponi A, Sanchez-Perez E, Giannakou A, et al. Mini‐Mental State Examination (MMSE) for the early detection of dementia in people with mild cognitive impairment (MCI). The Cochrane Database of Systematic Reviews. 2021 Jul 27;2021(7).
 
-- Code_vlievens_assessment.py — Python script with code
-- README.md — this file
-- plasma_lipidomics_AD.csv — sample dataset
